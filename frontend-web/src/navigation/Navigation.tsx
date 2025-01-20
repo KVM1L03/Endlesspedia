@@ -3,6 +3,12 @@ import { Routes, Route, Link } from 'react-router-dom';
 import HomePage from '../pages/HomePage.tsx';
 import ChoseGamePage from '../pages/ChoseGamePage.tsx';
 import { IoLogoGameControllerB } from 'react-icons/io';
+import Endless from '../pages/game-modes/Endless.tsx';
+
+const handleHighlightClick = (word: string) => {
+    console.log(`Clicked on: ${word}`);
+    // You can also implement navigation or other logic here
+};
 
 const Navigation = () => {
     return (
@@ -12,7 +18,7 @@ const Navigation = () => {
                 <Link to="/" className="p-2 text-blue-600 hover:text-blue-500">
                 </Link>
                 <Link to="/choose-game" className="p-2 text-blue-600 hover:text-blue-500">
-                <IoLogoGameControllerB />
+                    <IoLogoGameControllerB />
                 </Link>
             </aside>
 
@@ -21,6 +27,9 @@ const Navigation = () => {
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/choose-game" element={<ChoseGamePage />} />
+                    <Route path="/endless" element={<Endless onHighlightClick={handleHighlightClick} highlightWords={['imsum']} text='Lorem imsum Lorem ipsum Lorem'/>} />
+                    <Route path="/def2def" element={<div>From Definition to Definition</div>} />
+                    <Route path="/blitz" element={<div>Definition to Definition Blitz</div>} />
                 </Routes>
             </div>
         </div>

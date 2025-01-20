@@ -1,13 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography, Box } from '@mui/material';
+import { getDefinitions } from '../../api/definitionsAPI.ts';
 
 interface EndlessProps {
-    text: string;
     highlightWords: string[];
     onHighlightClick: (word: string) => void;
 }
 
-const Endless: React.FC<EndlessProps> = ({ text, highlightWords, onHighlightClick }) => {
+const Endless: React.FC<EndlessProps> = ({ highlightWords, onHighlightClick }) => {
+    const [definition, setDefinition] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchDefinition = async () => {
+            try {
+                const definitions = await getDefinitions("Python (programming language)");
+                setDefinition(definitions);
+            } catch (error) {
+                console.error('Error fetching definitions:', error);
+            }
+        };
+
+        fetchDefinition();
+    }, []);
+
+    const handleClick = async (word: string) => {
+        onHighlightClick(word);
+
+        try {
+            const definitions = await getDefinitions(word);
+            setDefinition(definitions); 
+        } catch (error) {
+            console.error('Error fetching definitions:', error);
+        }
+    };
+
     const getHighlightedText = (text: string, highlight: string[]) => {
         const parts = text.split(new RegExp(`(${highlight.join('|')})`, 'gi'));
         return parts.map((part, index) =>
@@ -15,7 +41,7 @@ const Endless: React.FC<EndlessProps> = ({ text, highlightWords, onHighlightClic
                 <span
                     key={index}
                     style={{ color: 'blue', cursor: 'pointer' }}
-                    onClick={() => onHighlightClick(part)}
+                    onClick={() => handleClick(part)}
                 >
                     {part}
                 </span>
@@ -32,14 +58,21 @@ const Endless: React.FC<EndlessProps> = ({ text, highlightWords, onHighlightClic
                 color: 'black',
                 minHeight: '100vh',
                 display: 'flex',
+                flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
                 padding: 4,
             }}
         >
-            <Typography variant="h4" component="div" sx={{ textAlign: 'center', fontWeight: 'bold' }}>
-                {getHighlightedText(text, highlightWords)}
-            </Typography>
+            {definition ? (
+                <Typography variant="caption" component="div" sx={{ fontWeight: 'bold' }}>
+                    {getHighlightedText(definition, highlightWords)}
+                </Typography>
+            ) : (
+                <Typography variant="h4" component="div" sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+                    Loading...
+                </Typography>
+            )}
         </Box>
     );
 };

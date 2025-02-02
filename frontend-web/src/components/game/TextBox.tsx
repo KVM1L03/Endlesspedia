@@ -53,7 +53,7 @@ const TextBox: React.FC<TextBoxProps> = ({ title, content, relatedTerms, onHighl
     };
 
     return (
-        <div className="w-3/4 bg-white text-black p-4">
+        <div className="w-3/4 bg-white text-black p-8 mx-8">
             {title && (
                 <div className="text-2xl font-bold text-center font-robotoMono">
                     {title}

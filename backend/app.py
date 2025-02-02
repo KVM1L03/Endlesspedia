@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import wikipedia
+import random
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -59,6 +60,25 @@ def related():
 
     links = page.links[:10]  # Limit to 10 related terms
     return jsonify({'title': page.title, 'related_terms': links})
+
+@app.route('/random', methods=['GET'])
+def random_content():
+    """
+    Endpoint for fetching a random Wikipedia page content.
+    """
+    random_title = wikipedia.random(pages=1)
+    try:
+        page = wikipedia.page(random_title)
+        content = page.content
+    except wikipedia.exceptions.DisambiguationError as e:
+        return jsonify({'error': f'Ambiguous term "{random_title}". Possible options: {e.options}'}), 400
+    except wikipedia.exceptions.PageError:
+        return jsonify({'error': f'Page "{random_title}" does not exist in Wikipedia.'}), 404
+
+    return jsonify({
+        'title': random_title,
+        'content': content
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -4,7 +4,7 @@ import Navigation from './navigation/Navigation.tsx';
 function App() {
   return (
     <div>
-        <Navigation />
+        <Navigation/>
     </div>
   );
 }

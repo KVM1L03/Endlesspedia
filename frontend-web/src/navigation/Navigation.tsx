@@ -4,7 +4,8 @@ import HomePage from '../pages/HomePage.tsx';
 import ChoseGamePage from '../pages/ChoseGamePage.tsx';
 import Endless from '../pages/game-modes/Endless.tsx';
 import { fetchDataForEndless } from '../api/dataFetcherEndless.ts';
-import Header from '../components/Header.tsx';
+import Header from './Header.tsx';
+import Footer from '../components/Footer.tsx';
 
 const handleHighlightClick = (word: string) => {
     console.log(`Clicked on: ${word}`);
@@ -27,10 +28,9 @@ const Navigation = () => {
     }, []);
 
     return (
-        <div className="bg-gray-100 min-h-screen font-sans flex flex-col">
+        <div className="min-h-screen font-sans flex flex-col">
             <Header />
-            {/* Main Content */}
-            <div className="flex-1 pt-16">
+            <div className="flex-1 pt-20">
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/choose-game" element={<ChoseGamePage />} />
@@ -49,8 +49,10 @@ const Navigation = () => {
                     )}
                     <Route path="/def2def" element={<div>From Definition to Definition</div>} />
                     <Route path="/blitz" element={<div>Definition to Definition Blitz</div>} />
+                    <Route path="/settings" element={<div>Settings Page</div>} />
                 </Routes>
             </div>
+            <Footer/>
         </div>
     );
 };

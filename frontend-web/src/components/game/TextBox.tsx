@@ -16,7 +16,7 @@ const TextBox: React.FC<TextBoxProps> = ({ title, content, relatedTerms, onHighl
             part && highlight.some(term => term.toLowerCase() === part.toLowerCase()) ? (
                 <span
                     key={index}
-                    className="text-blue-500 cursor-pointer"
+                    className="text-blue-500 font-bold cursor-pointer"
                     onClick={() => handleClick(part)}
                 >
                     {part}
@@ -53,7 +53,7 @@ const TextBox: React.FC<TextBoxProps> = ({ title, content, relatedTerms, onHighl
     };
 
     return (
-        <div className="w-3/4 bg-white text-black p-8 mx-8">
+        <div className="w-3/4 bg-white text-black mx-8">
             {title && (
                 <div className="text-2xl font-bold text-center font-robotoMono">
                     {title}

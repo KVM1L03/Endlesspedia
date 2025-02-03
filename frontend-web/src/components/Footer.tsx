@@ -5,7 +5,7 @@ const Footer: React.FC = () => {
     return (
         <footer className="bg-[#d3d3d3] text-black font-robotoMono py-4 mt-8 flex justify-center items-center">
             <p className="text-center">
-                © 2023 Endlesspedia. All rights reserved. |{' '}
+                © 2025 Endlesspedia. All rights reserved. |{' '}
                 <Link to="/privacy-policy" className="underline">
                     Privacy Policy
                 </Link>

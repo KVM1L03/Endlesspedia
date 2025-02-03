@@ -1,5 +1,5 @@
 import React, { useState, Suspense } from 'react';
-import { getDefinitions, getRelatedTerms } from '../../api/definitionsAPI.ts';
+import { getDefinition, getRelatedTerms } from '../../api/definitionsAPI.ts';
 import Timer from '../../components/game/Timer.tsx';
 import SideBar from '../../components/game/SideBar.tsx';
 import SkeletonLoader from '../../components/animation/SkeletonLoader.tsx';
@@ -24,7 +24,7 @@ const Endless: React.FC<EndlessProps> = ({ title, content, relatedTerms, onHighl
         setLoading(true);
 
         try {
-            const newContent = await getDefinitions(word);
+            const newContent = await getDefinition(word);
             const newRelatedTerms = await getRelatedTerms(word);
             setCurrentTitle(word);
             setCurrentContent(newContent);

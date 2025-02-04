@@ -58,8 +58,8 @@ def related():
     except wikipedia.exceptions.PageError:
         return jsonify({'error': f'Page "{term}" does not exist in Wikipedia.'}), 404
 
-    links = page.links[:10]  # Limit to 10 related terms
-    return jsonify({'title': page.title, 'related_terms': links})
+    links = page.links
+    return jsonify({'title': page.title, 'links': links})
 
 @app.route('/random', methods=['GET'])
 def random_content():

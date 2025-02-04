@@ -34,8 +34,8 @@ const DefToDef: React.FC<EndlessProps> = ({ title, content, relatedTerms, onHigh
                 const newContent = await getDefinition(word);
                 const newRelatedTerms = await getRelatedTerms(word);
                 setCurrentTitle(word);
-                setCurrentContent(newContent);
-                setCurrentRelatedTerms(newRelatedTerms);
+                setCurrentContent(newContent.content || '');
+                setCurrentRelatedTerms(newRelatedTerms.links || []);
             } catch (error) {
                 console.error('Error fetching new definition:', error);
             } finally {
@@ -50,8 +50,8 @@ const DefToDef: React.FC<EndlessProps> = ({ title, content, relatedTerms, onHigh
             const newContent = await getDefinition(fromTerm);
             const newRelatedTerms = await getRelatedTerms(fromTerm);
             setCurrentTitle(fromTerm);
-            setCurrentContent(newContent);
-            setCurrentRelatedTerms(newRelatedTerms);
+            setCurrentContent(newContent.content || '');
+            setCurrentRelatedTerms(newRelatedTerms.links || []);
         } catch (error) {
             console.error('Error fetching new definition:', error);
         } finally {
@@ -92,11 +92,11 @@ const DefToDef: React.FC<EndlessProps> = ({ title, content, relatedTerms, onHigh
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black-500 sm:text-sm"
                         />
                     </div>
-                    <Button color='#ff8f12' text='Submit' onClick={handleSubmit} textColor='black'/>
+                    <Button color='#ff8f12' text='Submit' onClick={handleSubmit} textColor='black' />
                 </div>
             </SideBar>
             <div className="w-3/4 flex flex-col relative">
-                <div className="flex justify-end p-4">
+                <div className="fixed top-16 right-0 p-4 flex justify-end space-x-12">
                     <Timer time="00:00" />
                     <StepsCounter steps={stepCount} />
                 </div>
@@ -106,12 +106,10 @@ const DefToDef: React.FC<EndlessProps> = ({ title, content, relatedTerms, onHigh
                             <SkeletonLoader />
                         ) : (
                             <div className="relative">
-                                
                                 <TextBox
                                     title={currentTitle}
                                     content={currentContent}
                                     relatedTerms={currentRelatedTerms}
-                                    onHighlightClick={onHighlightClick}
                                     handleClick={handleClick}
                                 />
                             </div>

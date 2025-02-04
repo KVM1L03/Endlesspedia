@@ -17,6 +17,8 @@ const Navigation = () => {
     const [endlessData, setEndlessData] = useState<{ title: string; content: string; relatedTerms: string[] } | null>(null);
     const [defToDefData, setDefToDefData] = useState<{ title: string; content: string; relatedTerms: string[] } | null>(null);
 
+    const initialTerm = 'Australia';
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -24,7 +26,7 @@ const Navigation = () => {
                 setEndlessData(endlessData);
                 console.log('Fetched Endless Data:', endlessData);
 
-                const d2dData = await fetchDataForD2D({ term: 'Australia' });
+                const d2dData = await fetchDataForD2D({ term: initialTerm });
                 setDefToDefData(d2dData);
                 console.log('Fetched DefToDef Data:', d2dData);
             } catch (error) {
@@ -34,6 +36,18 @@ const Navigation = () => {
 
         fetchData();
     }, []);
+
+    const defaultEndlessData = {
+        title: 'Default Endless Title',
+        content: 'This is default content for the Endless mode.',
+        relatedTerms: ['default1', 'default2', 'default3'],
+    };
+
+    const defaultDefToDefData = {
+        title: 'Default DefToDef Title',
+        content: 'This is default content for the DefToDef mode.',
+        relatedTerms: ['defaultA', 'defaultB', 'defaultC'],
+    };
 
     return (
         <div className="min-h-screen font-sans flex flex-col">
@@ -46,9 +60,9 @@ const Navigation = () => {
                         path="/endless"
                         element={
                             <Endless
-                                title={endlessData?.title || 'Default Endless Title'}
-                                content={endlessData?.content || 'This is default content for the Endless mode.'}
-                                relatedTerms={endlessData?.relatedTerms || ['default1', 'default2', 'default3']}
+                                title={endlessData?.title || defaultEndlessData.title}
+                                content={endlessData?.content || defaultEndlessData.content}
+                                relatedTerms={endlessData?.relatedTerms || defaultEndlessData.relatedTerms}
                                 onHighlightClick={handleHighlightClick}
                             />
                         }
@@ -57,9 +71,9 @@ const Navigation = () => {
                         path="/def2def"
                         element={
                             <DefToDef
-                                title={defToDefData?.title || 'Default DefToDef Title'}
-                                content={defToDefData?.content || 'This is default content for the DefToDef mode.'}
-                                relatedTerms={defToDefData?.relatedTerms || ['defaultA', 'defaultB', 'defaultC']}
+                                title={defToDefData?.title || defaultDefToDefData.title}
+                                content={defToDefData?.content || defaultDefToDefData.content}
+                                relatedTerms={defToDefData?.relatedTerms || defaultDefToDefData.relatedTerms}
                                 onHighlightClick={handleHighlightClick}
                             />
                         }

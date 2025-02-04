@@ -3,12 +3,13 @@ import { getRandomDefinition, getRelatedTerms } from './definitionsAPI.ts';
 export const fetchDataForEndless = async () => {
     try {
         const randomDefinition = await getRandomDefinition();
-        const relatedTerms = await getRelatedTerms(randomDefinition.title);
+        const relatedTermsResponse = await getRelatedTerms(randomDefinition.title);
+        const relatedTerms = relatedTermsResponse.links || []; 
         console.log('Related Terms:', relatedTerms);
         return {
             title: randomDefinition.title,
             content: randomDefinition.content,
-            relatedTerms: relatedTerms,
+            relatedTerms: relatedTerms, 
         };
     } catch (error) {
         console.error('Error fetching data for Endless:', error);

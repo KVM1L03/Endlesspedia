@@ -38,7 +38,7 @@ const TextBox: React.FC<TextBoxProps> = ({ title, content, relatedTerms, handleC
             {children}
             <h1 className='text-center text-2xl my-2 font-robotoMono font-bold'>{title}</h1>
             {typeof content === 'string' ? (
-                <div className="text-sm font-robotoMono">
+                <div className="text-md font-robotoMono">
                     {getHighlightedText(content, relatedTerms)}
                 </div>
             ) : (

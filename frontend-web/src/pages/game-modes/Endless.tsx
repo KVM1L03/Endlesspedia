@@ -16,6 +16,7 @@ const Endless: React.FC<EndlessProps> = ({ onHighlightClick }) => {
     const [currentContent, setCurrentContent] = useState<string>('Loading...');
     const [currentRelatedTerms, setCurrentRelatedTerms] = useState<string[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+
     useEffect(() => {
         const fetchData = async () => {
             try {

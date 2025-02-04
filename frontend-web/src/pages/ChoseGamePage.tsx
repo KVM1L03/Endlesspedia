@@ -1,33 +1,35 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Card from '../components/Card.tsx';
+import Button from '../components/game/Button.tsx';
 
 function ChoseGamePage() {
     return (
-        <div className="bg-[#ffedd9] min-h-screen flex flex-col items-center pt-8">
-            <h1 className="text-3xl font-bold font-robotoMono mb-8">Choose Game Mode</h1>
-            <div className="flex flex-wrap justify-center">
-                <Link to="/endless" className="no-underline">
-                    <Card
-                        image="https://i.ibb.co/7y5NTSy/1.png"
-                        title="Infinite Definition Mode"
-                        description="Click from one definition to another by clicking references within definitions."
-                    />
+        <div className="bg-white min-h-screen flex flex-col items-center pt-8">
+            <div className='bg-[#ffedd9] w-3/4 p-16 rounded-xl shadow-lg text-center font-robotoMono mb-8'>
+                <h1 className='text-xl'>Get ready for an adventure of endless possibilities!</h1>
+            </div>
+            <div className='bg-white w-1/2 flex justify-center mb-8 space-x-4'>
+                <Link to="/endless">
+                    <Button color='#ff8f12' text='Endless' textColor='black' />
                 </Link>
-                <Link to="/def2def" className="no-underline">
-                    <Card
-                        image="https://i.ibb.co/84H3YCC/2.png"
-                        title="From Definition to Definition"
-                        description="Navigate from one definition to another in a structured manner."
-                    />
+                <Link to="/def2def">
+                    <Button color='#ff8f12' text='Def2Def' textColor='black' />
                 </Link>
-                <Link to="/blitz" className="no-underline">
-                    <Card
-                        image="https://i.ibb.co/ZdNjtvY/3.png"
-                        title="Definition to Definition Blitz"
-                        description="Quickly move from one definition to another in a blitz mode."
-                    />
-                </Link>
+            </div>
+            <div className='bg-[#d3d3d3] w-3/4 p-16 rounded-xl font-bold shadow-lg text-center font-robotoMono'>
+                <h1 className='text-xl text-black mb-4'>Previous Games</h1>
+                <div className='bg-[#fff] w-full p-4 rounded-xl font-bold shadow-lg text-center font-robotoMono mb-4 flex justify-between'>
+                    <p className='text-xl text-black'>Endless</p>
+                    <p>Score: 40 min</p>
+                </div>
+                <div className='bg-[#fff] w-full p-4 rounded-xl font-bold shadow-lg text-center font-robotoMono mb-4 flex justify-between'>
+                    <p className='text-xl text-black'>Def2Def</p>
+                    <p>Score: 12 s</p>
+                </div>
+                <div className='bg-[#fff] w-full p-4 rounded-xl font-bold shadow-lg text-center font-robotoMono flex justify-between'>
+                    <p className='text-xl text-black'>Def2Def</p>
+                    <p>Score: 12 s</p>
+                </div>
             </div>
         </div>
     );

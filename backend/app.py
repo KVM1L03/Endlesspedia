@@ -2,9 +2,18 @@ from flask import Flask, request, jsonify
 import wikipedia
 import random
 from flask_cors import CORS
+import logging
+import asyncio
+import aiohttp
+from cachetools import TTLCache
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
+
+logging.basicConfig(level=logging.DEBUG)
+
+# Cache for storing validated links
+cache = TTLCache(maxsize=100, ttl=300)
 
 @app.route('/search', methods=['GET'])
 def search():
@@ -36,7 +45,7 @@ def search():
     })
 
 @app.route('/related', methods=['GET'])
-def related():
+async def related():
     """
     Endpoint for fetching related links.
     Parameter: ?term=<term>
@@ -58,8 +67,22 @@ def related():
     except wikipedia.exceptions.PageError:
         return jsonify({'error': f'Page "{term}" does not exist in Wikipedia.'}), 404
 
-    links = page.links
-    return jsonify({'title': page.title, 'links': links})
+    # Validate links asynchronously with caching
+    async def validate_link(link):
+        if link in cache:
+            return cache[link]
+        try:
+            await loop.run_in_executor(None, wikipedia.page, link)
+            cache[link] = link
+            return link
+        except (wikipedia.exceptions.DisambiguationError, wikipedia.exceptions.PageError):
+            return None
+
+    loop = asyncio.get_event_loop()
+    tasks = [validate_link(link) for link in page.links[:15]]  # Check the first 15 links
+    valid_links = [link for link in await asyncio.gather(*tasks) if link]
+
+    return jsonify({'title': page.title, 'links': valid_links[:10]})  # Limit to 10 valid links
 
 @app.route('/random', methods=['GET'])
 def random_content():

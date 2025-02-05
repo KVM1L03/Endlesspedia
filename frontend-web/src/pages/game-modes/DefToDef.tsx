@@ -5,6 +5,7 @@ import SideBar from '../../components/game/SideBar.tsx';
 import SkeletonLoader from '../../components/animation/SkeletonLoader.tsx';
 import StepsCounter from '../../components/game/StepsCounter.tsx';
 import Button from '../../components/game/Button.tsx';
+import ConfirmAnimation from '../../components/animation/ConfirmAnimation.tsx';
 
 const TextBox = React.lazy(() => import('../../components/game/TextBox.tsx'));
 
@@ -23,6 +24,7 @@ const DefToDef: React.FC<EndlessProps> = ({ title, content, relatedTerms, onHigh
     const [fromTerm, setFromTerm] = useState<string>('');
     const [toTerm, setToTerm] = useState<string>('');
     const [stepCount, setStepCount] = useState<number>(0);
+    const [showAnimation, setShowAnimation] = useState<boolean>(false);
 
     const handleClick = async (word: string) => {
         if (currentRelatedTerms.includes(word)) {
@@ -36,6 +38,9 @@ const DefToDef: React.FC<EndlessProps> = ({ title, content, relatedTerms, onHigh
                 setCurrentTitle(word);
                 setCurrentContent(newContent.content || '');
                 setCurrentRelatedTerms(newRelatedTerms.links || []);
+                if (word === toTerm) {
+                    setShowAnimation(true);
+                }
             } catch (error) {
                 console.error('Error fetching new definition:', error);
             } finally {
@@ -52,6 +57,9 @@ const DefToDef: React.FC<EndlessProps> = ({ title, content, relatedTerms, onHigh
             setCurrentTitle(fromTerm);
             setCurrentContent(newContent.content || '');
             setCurrentRelatedTerms(newRelatedTerms.links || []);
+            if (fromTerm === toTerm) {
+                setShowAnimation(true);
+            }
         } catch (error) {
             console.error('Error fetching new definition:', error);
         } finally {
@@ -117,6 +125,7 @@ const DefToDef: React.FC<EndlessProps> = ({ title, content, relatedTerms, onHigh
                     </Suspense>
                 </div>
             </div>
+            <ConfirmAnimation show={showAnimation} onAnimationEnd={() => setShowAnimation(false)} />
         </div>
     );
 };

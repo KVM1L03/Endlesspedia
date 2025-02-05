@@ -44,9 +44,8 @@ const Navigation = () => {
     };
 
     const defaultDefToDefData = {
-        title: 'Default DefToDef Title',
-        content: 'This is default content for the DefToDef mode.',
-        relatedTerms: ['defaultA', 'defaultB', 'defaultC'],
+        title: 'DefToDef Mode',
+        content: 'Choose path from one to another term or choose from most popular.',
     };
 
     return (

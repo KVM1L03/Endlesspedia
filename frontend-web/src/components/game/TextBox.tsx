@@ -9,7 +9,7 @@ interface TextBoxProps {
 }
 
 const TextBox: React.FC<TextBoxProps> = ({ title, content, relatedTerms, onHighlightClick, handleClick }) => {
-    const getHighlightedText = (text: string, highlight: string[]) => {
+        const getHighlightedText = (text: string, highlight: string[] = []) => {
         const regex = new RegExp(`(${highlight.map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
         const parts = text.split(regex);
         return parts.map((part, index) =>
@@ -52,6 +52,8 @@ const TextBox: React.FC<TextBoxProps> = ({ title, content, relatedTerms, onHighl
         });
     };
 
+    const defaultContent = "No content available.";
+
     return (
         <div className="w-3/4 bg-white text-black mx-8">
             {title && (
@@ -64,8 +66,8 @@ const TextBox: React.FC<TextBoxProps> = ({ title, content, relatedTerms, onHighl
                     {renderSections(content)}
                 </div>
             ) : (
-                <div className="text-2xl font-bold text-center font-robotoMono">
-                    Loading...
+                <div className="text-sm font-robotoMono">
+                    {defaultContent}
                 </div>
             )}
         </div>

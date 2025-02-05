@@ -6,7 +6,8 @@ function ChoseGamePage() {
     return (
         <div className="bg-white min-h-screen flex flex-col items-center pt-8">
             <div className='bg-[#ffedd9] w-3/4 p-16 rounded-xl shadow-lg text-center font-robotoMono mb-8'>
-                <h1 className='text-xl'>Get ready for an adventure of endless possibilities!</h1>
+                <h1 className='text-xl font-semibold'>Get ready for an adventure of endless possibilities!</h1>
+                <p className='mt-8 text-lg'>Chose your game mode:</p>
             </div>
             <div className='bg-white w-1/2 flex justify-center mb-8 space-x-4'>
                 <Link to="/endless">

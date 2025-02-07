@@ -3,7 +3,8 @@ import { getDefinition, getRelatedTerms } from './definitionsAPI.ts';
 export const fetchDataForD2D = async ({ term }) => {
     try {
         const definition = await getDefinition(term);
-        const relatedTerms = await getRelatedTerms(definition.title);
+        const relatedTermsResponse = await getRelatedTerms(definition.title);
+        const relatedTerms = relatedTermsResponse.links || []; 
         console.log('Related Terms:', relatedTerms);
         return {
             title: definition.title,
@@ -11,7 +12,7 @@ export const fetchDataForD2D = async ({ term }) => {
             relatedTerms: relatedTerms,
         };
     } catch (error) {
-        console.error('Error fetching data for Endless:', error);
+        console.error('Error fetching data for D2D:', error);
         throw error;
     }
 };

@@ -9,14 +9,14 @@ import ConfirmAnimation from '../../components/animation/ConfirmAnimation.tsx';
 
 const TextBox = React.lazy(() => import('../../components/game/TextBox.tsx'));
 
-interface EndlessProps {
+interface DefToDefProps {
     title: string;
     content: string;
     relatedTerms: string[];
     onHighlightClick: (word: string) => void;
 }
 
-const DefToDef: React.FC<EndlessProps> = ({ title, content, relatedTerms, onHighlightClick }) => {
+const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHighlightClick }) => {
     const [currentTitle, setCurrentTitle] = useState<string>(title);
     const [currentContent, setCurrentContent] = useState<string>(content);
     const [currentRelatedTerms, setCurrentRelatedTerms] = useState<string[]>(relatedTerms);
@@ -68,11 +68,11 @@ const DefToDef: React.FC<EndlessProps> = ({ title, content, relatedTerms, onHigh
     };
 
     const popularPaths = [
-        { text: '🥇 Top Definition 1', onClick: () => handleClick('Top Definition 1') },
-        { text: '🥈 Top Definition 2', onClick: () => handleClick('Top Definition 2') },
-        { text: '🥉 Top Definition 3', onClick: () => handleClick('Top Definition 3') },
-        { text: 'Top Definition 4', onClick: () => handleClick('Top Definition 4') },
-        { text: 'Top Definition 5', onClick: () => handleClick('Top Definition 5') },
+        { text: '🥇 Top Definition 1', onClick: () => handleClick('Top Definition 1'), color: '#ff8f12', textColor: 'black' },
+        { text: '🥈 Top Definition 2', onClick: () => handleClick('Top Definition 2'), color: '#ff8f12', textColor: 'black' },
+        { text: '🥉 Top Definition 3', onClick: () => handleClick('Top Definition 3'), color: '#ff8f12', textColor: 'black' },
+        { text: 'Top Definition 4', onClick: () => handleClick('Top Definition 4'), color: '#ff8f12', textColor: 'black' },
+        { text: 'Top Definition 5', onClick: () => handleClick('Top Definition 5'), color: '#ff8f12', textColor: 'black' },
     ];
 
     return (
@@ -119,6 +119,7 @@ const DefToDef: React.FC<EndlessProps> = ({ title, content, relatedTerms, onHigh
                                     content={currentContent}
                                     relatedTerms={currentRelatedTerms}
                                     handleClick={handleClick}
+                                    onHighlightClick={onHighlightClick}
                                 />
                             </div>
                         )}

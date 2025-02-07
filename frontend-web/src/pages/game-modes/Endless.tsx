@@ -18,29 +18,43 @@ const Endless: React.FC<EndlessProps> = ({ onHighlightClick }) => {
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
+        let isMounted = true; // Track if the component is mounted
+
         const fetchData = async () => {
             try {
+                console.log('Fetching data for Endless...');
                 const { title, content, relatedTerms } = await fetchDataForEndless();
-                setCurrentTitle(title);
-                setCurrentContent(content);
-                setCurrentRelatedTerms(relatedTerms);
+                if (isMounted) { // Only update state if the component is still mounted
+                    console.log('Data fetched:', { title, content, relatedTerms });
+                    setCurrentTitle(title);
+                    setCurrentContent(content);
+                    setCurrentRelatedTerms(relatedTerms);
+                }
             } catch (error) {
                 console.error('Error fetching data for Endless:', error);
             } finally {
-                setLoading(false);
+                if (isMounted) {
+                    setLoading(false);
+                }
             }
         };
 
         fetchData();
-    }, []);
+
+        return () => {
+            isMounted = false; // Cleanup function to set isMounted to false
+        };
+    }, []); // Empty dependency array ensures this runs only once
 
     const handleClick = async (word: string) => {
         onHighlightClick(word);
         setLoading(true);
 
         try {
+            console.log(`Fetching new definition for word: ${word}`);
             const newContent = await getDefinition(word);
             const newRelatedTerms = await getRelatedTerms(word);
+            console.log('New data fetched:', { newContent, newRelatedTerms });
             setCurrentTitle(word);
             setCurrentContent(newContent.content || ''); 
             setCurrentRelatedTerms(newRelatedTerms.links || []); 
@@ -74,6 +88,7 @@ const Endless: React.FC<EndlessProps> = ({ onHighlightClick }) => {
                                 content={currentContent}
                                 relatedTerms={currentRelatedTerms}
                                 handleClick={handleClick}
+                                onHighlightClick={onHighlightClick}
                             />
                         )}
                     </Suspense>

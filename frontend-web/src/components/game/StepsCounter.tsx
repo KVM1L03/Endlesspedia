@@ -6,7 +6,7 @@ interface StepsCounterProps {
 
 const StepsCounter: React.FC<StepsCounterProps> = ({ steps }) => {
     return (
-        <div className="absolute top-4 left-4 bg-[#ff8f12] text-black border-2 border-black shadow-lg shadow-black rounded-full p-4 flex items-center justify-center font-robotoMono">
+        <div className="bg-[#ff8f12] m-2 text-black border-2 border-black shadow-lg shadow-black rounded-full p-4 flex items-center justify-center font-robotoMono">
             Steps: {steps}
         </div>
     );

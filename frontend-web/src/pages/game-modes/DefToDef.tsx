@@ -1,11 +1,10 @@
-import React, { useState, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { getDefinition, getRelatedTerms } from '../../api/definitionsAPI.ts';
-import Timer from '../../components/game/Timer.tsx';
 import SideBar from '../../components/game/SideBar.tsx';
 import SkeletonLoader from '../../components/animation/SkeletonLoader.tsx';
-import StepsCounter from '../../components/game/StepsCounter.tsx';
 import Button from '../../components/game/Button.tsx';
-import ConfirmAnimation from '../../components/animation/ConfirmAnimation.tsx';
+import WinPopout from '../../components/game/WinPopout.tsx';
+import GameInfo from '../../components/game/d2d/GameInfo.tsx';
 
 const TextBox = React.lazy(() => import('../../components/game/TextBox.tsx'));
 
@@ -25,6 +24,25 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
     const [toTerm, setToTerm] = useState<string>('');
     const [stepCount, setStepCount] = useState<number>(0);
     const [showAnimation, setShowAnimation] = useState<boolean>(false);
+    const [time, setTime] = useState<number>(0);
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout | undefined;
+        if (!showAnimation) {
+            timer = setInterval(() => {
+                setTime(prevTime => prevTime + 1);
+            }, 1000);
+        } else {
+            clearInterval(timer);
+        }
+        return () => clearInterval(timer);
+    }, [showAnimation]);
+
+    const formatTime = (time: number) => {
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+        return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    };
 
     const handleClick = async (word: string) => {
         if (currentRelatedTerms.includes(word)) {
@@ -38,6 +56,7 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
                 setCurrentTitle(word);
                 setCurrentContent(newContent.content || '');
                 setCurrentRelatedTerms(newRelatedTerms.links || []);
+                window.scrollTo(0, 0); // Scroll to the top of the page
                 if (word === toTerm) {
                     setShowAnimation(true);
                 }
@@ -51,12 +70,15 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
 
     const handleSubmit = async () => {
         setLoading(true);
+        setTime(0);
+        setStepCount(0);
         try {
             const newContent = await getDefinition(fromTerm);
             const newRelatedTerms = await getRelatedTerms(fromTerm);
             setCurrentTitle(fromTerm);
             setCurrentContent(newContent.content || '');
             setCurrentRelatedTerms(newRelatedTerms.links || []);
+            window.scrollTo(0, 0);
             if (fromTerm === toTerm) {
                 setShowAnimation(true);
             }
@@ -68,11 +90,9 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
     };
 
     const popularPaths = [
-        { text: '🥇 Top Definition 1', onClick: () => handleClick('Top Definition 1'), color: '#ff8f12', textColor: 'black' },
-        { text: '🥈 Top Definition 2', onClick: () => handleClick('Top Definition 2'), color: '#ff8f12', textColor: 'black' },
-        { text: '🥉 Top Definition 3', onClick: () => handleClick('Top Definition 3'), color: '#ff8f12', textColor: 'black' },
-        { text: 'Top Definition 4', onClick: () => handleClick('Top Definition 4'), color: '#ff8f12', textColor: 'black' },
-        { text: 'Top Definition 5', onClick: () => handleClick('Top Definition 5'), color: '#ff8f12', textColor: 'black' },
+        { text: '🥇 England -> France', onClick: () => handleClick('Top Definition 1'), color: '#ffedd9', textColor: 'black' },
+        { text: '🥈 Poland -> Germany', onClick: () => handleClick('Top Definition 2'), color: '#ffedd9', textColor: 'black' },
+        { text: '🥉 Coca cola -> Pepsi', onClick: () => handleClick('Top Definition 3'), color: '#ffedd9', textColor: 'black' },
     ];
 
     return (
@@ -105,8 +125,7 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
             </SideBar>
             <div className="w-3/4 flex flex-col relative">
                 <div className="fixed top-16 right-0 p-4 flex justify-end space-x-12">
-                    <Timer time="00:00" />
-                    <StepsCounter steps={stepCount} />
+                    <GameInfo time={formatTime(time)} steps={stepCount} />
                 </div>
                 <div className="flex-1 my-24 overflow-auto">
                     <Suspense fallback={<SkeletonLoader />}>
@@ -126,7 +145,7 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
                     </Suspense>
                 </div>
             </div>
-            <ConfirmAnimation show={showAnimation} onAnimationEnd={() => setShowAnimation(false)} />
+            <WinPopout steps={stepCount} time={formatTime(time)} show={showAnimation} onAnimationEnd={() => setShowAnimation(false)} />
         </div>
     );
 };

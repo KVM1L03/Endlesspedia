@@ -9,8 +9,8 @@ interface TextBoxProps {
 }
 
 const TextBox: React.FC<TextBoxProps> = ({ title, content, relatedTerms, onHighlightClick, handleClick }) => {
-        const getHighlightedText = (text: string, highlight: string[] = []) => {
-        const regex = new RegExp(`(${highlight.map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
+    const getHighlightedText = (text: string, highlight: string[] = []) => {
+        const regex = new RegExp(`\\b(${highlight.map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`, 'gi');
         const parts = text.split(regex);
         return parts.map((part, index) =>
             part && highlight.some(term => term.toLowerCase() === part.toLowerCase()) ? (

@@ -1,39 +1,30 @@
 import React from 'react';
-import { TextField, Button, Container, Box } from '@mui/material';
-import { IoMdSearch } from "react-icons/io";
-import CustomCard from '../components/Card.tsx';
+import { Link } from 'react-router-dom';
+import Button from '../components/game/Button.tsx';
+import { FaTiktok } from 'react-icons/fa';
 
 function HomePage() {
     return (
-        <Container maxWidth="sm">
-            <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
-                <form className="flex items-center gap-2">
-                    <TextField
-                        variant="outlined"
-                        placeholder="Search"
-                        fullWidth
-                        InputProps={{
-                            endAdornment: (
-                                <Button
-                                    type="submit"
-                                    variant="text"
-                                    color="primary"
-                                    startIcon={<IoMdSearch />}
-                                >
-                                </Button>
-                            ),
-                        }}
-                    />
-                </form>
-                <Box mt={4}>
-                    <CustomCard
-                        image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEzSwHWYtdecUbj-IpGr1d4tpon6ybWlTnLw&s"
-                        title="Lizard"
-                        description="Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica."
-                    />
-                </Box>
-            </Box>
-        </Container>
+        <div className='bg-[#ffedd9] flex flex-col mx-8 my-4 rounded-xl'>
+            <section className='flex flex-row items-center justify-between w-full'>
+                <div className='flex flex-col'>
+                    <h1 className="text-4xl font-bold font-robotoMono m-6">Dive into a world of knowledge & fun!</h1>
+                    <p className="text-xl font-robotoMono m-8">Start your adventure today !</p>
+                    <p className="text-md text-wrap max-w-2xl font-robotoMono m-8">Endlesspedia is your gateway to endless learning and entertainment. Explore a variety of topics, challenge yourself with exciting game modes, and expand your knowledge in a fun and engaging way!
+                    <Button color='#ff8f12' text='Follow us on TikTok!' textColor='black' className='self-start my-8 flex items-center' icon={<FaTiktok />}/></p>
+                </div>
+                <div className='flex'>
+                    <img src="https://i.ibb.co/bjMKV8nv/illustration.png" alt='Superhero' className='max-w-full h-auto'/>
+                </div>
+            </section>
+            <section className='flex flex-col items-center justify-center w-full mt-8'>
+                <h2 className="text-3xl font-bold font-robotoMono m-6">Ready to Choose Your Game?</h2>
+                <p className="text-lg font-robotoMono m-4">Select from a variety of exciting game modes and start playing now!</p>
+                <Link to="/choose-game">
+                    <Button color='#ff8f12' text='Choose Game' textColor='black' className='m-4'/>
+                </Link>
+            </section>
+        </div>
     );
 }
 

@@ -49,7 +49,7 @@ const Navigation = () => {
     };
 
     return (
-        <div className="min-h-screen font-sans flex flex-col">
+        <div className="bg-white min-h-screen font-sans flex flex-col">
             <Header />
             <div className="flex-1 pt-20">
                 <Routes>

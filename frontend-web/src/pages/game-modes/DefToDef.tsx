@@ -45,7 +45,12 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
     };
 
     const handleClick = async (word: string) => {
-        if (currentRelatedTerms.includes(word)) {
+        console.log(`Clicked on word: ${word}`);
+        const normalizedWord = word.trim().toLowerCase();
+        const normalizedRelatedTerms = currentRelatedTerms.map(term => term.trim().toLowerCase());
+
+        if (normalizedRelatedTerms.includes(normalizedWord)) {
+            console.log(`Fetching data for word: ${word}`);
             onHighlightClick(word);
             setLoading(true);
             setStepCount(stepCount + 1);
@@ -53,10 +58,11 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
             try {
                 const newContent = await getDefinition(word);
                 const newRelatedTerms = await getRelatedTerms(word);
+                console.log('New data fetched:', { newContent, newRelatedTerms });
                 setCurrentTitle(word);
                 setCurrentContent(newContent.content || '');
                 setCurrentRelatedTerms(newRelatedTerms.links || []);
-                window.scrollTo(0, 0); // Scroll to the top of the page
+                window.scrollTo(0, 0); 
                 if (word === toTerm) {
                     setShowAnimation(true);
                 }
@@ -65,6 +71,8 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
             } finally {
                 setLoading(false);
             }
+        } else {
+            console.log(`Word not found in currentRelatedTerms: ${currentRelatedTerms}`);
         }
     };
 

@@ -3,7 +3,6 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from '../pages/HomePage.tsx';
 import ChoseGamePage from '../pages/ChoseGamePage.tsx';
 import Endless from '../pages/game-modes/Endless.tsx';
-import { fetchDataForEndless } from '../api/dataFetcherEndless.ts';
 import { fetchDataForD2D } from '../api/dataFetcherD2D.ts';
 import Header from './Header.tsx';
 import Footer from '../components/Footer.tsx';
@@ -14,7 +13,6 @@ const handleHighlightClick = (word: string) => {
 };
 
 const Navigation = () => {
-    const [endlessData, setEndlessData] = useState<{ title: string; content: string; relatedTerms: string[] } | null>(null);
     const [defToDefData, setDefToDefData] = useState<{ title: string; content: string; relatedTerms: string[] } | null>(null);
 
     const initialTerm = 'Australia';
@@ -22,10 +20,6 @@ const Navigation = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const endlessData = await fetchDataForEndless();
-                setEndlessData(endlessData);
-                console.log('Fetched Endless Data:', endlessData);
-
                 const d2dData = await fetchDataForD2D({ term: initialTerm });
                 setDefToDefData(d2dData);
                 console.log('Fetched DefToDef Data:', d2dData);
@@ -36,7 +30,6 @@ const Navigation = () => {
 
         fetchData();
     }, []);
-
 
     const defaultDefToDefData = {
         title: 'DefToDef Mode',

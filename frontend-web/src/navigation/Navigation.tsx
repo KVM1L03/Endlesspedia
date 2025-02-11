@@ -37,15 +37,11 @@ const Navigation = () => {
         fetchData();
     }, []);
 
-    const defaultEndlessData = {
-        title: 'Default Endless Title',
-        content: 'This is default content for the Endless mode.',
-        relatedTerms: ['default1', 'default2', 'default3'],
-    };
 
     const defaultDefToDefData = {
         title: 'DefToDef Mode',
         content: 'Choose path from one to another term or choose from most popular.',
+        relatedTerms: ['default1', 'default2', 'default3'],
     };
 
     return (
@@ -59,9 +55,6 @@ const Navigation = () => {
                         path="/endless"
                         element={
                             <Endless
-                                title={endlessData?.title || defaultEndlessData.title}
-                                content={endlessData?.content || defaultEndlessData.content}
-                                relatedTerms={endlessData?.relatedTerms || defaultEndlessData.relatedTerms}
                                 onHighlightClick={handleHighlightClick}
                             />
                         }

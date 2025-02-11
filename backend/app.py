@@ -1,16 +1,41 @@
+import awsgi
 from flask import Flask, request, jsonify
 import requests
 from flask_cors import CORS
 import random
 import logging
+from flask_httpauth import HTTPTokenAuth
+from dotenv import load_dotenv
+import os
+
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 logging.basicConfig(level=logging.DEBUG)
 
+# Get the API key from environment variables
+API_KEY = os.getenv('API_KEY')
+
+# Initialize HTTPTokenAuth
+auth = HTTPTokenAuth(scheme='Bearer')
+
+# Verify the API key
+
+
+@auth.verify_token
+def verify_token(token):
+    if token == API_KEY:
+        return True
+    return False
+
+
 # Wikipedia API base URL
 WIKI_API_URL = "https://{lang}.wikipedia.org/w/api.php"
+
 
 def mediawiki_api_request(params, lang='en'):
     """
@@ -20,10 +45,13 @@ def mediawiki_api_request(params, lang='en'):
     params['format'] = 'json'  # Ensure the response is in JSON format
     params['redirects'] = 1  # Automatically handle redirects
 
-    response = requests.get(WIKI_API_URL.format(lang=lang), params=params, headers=headers)
+    response = requests.get(WIKI_API_URL.format(
+        lang=lang), params=params, headers=headers)
     return response.json()
 
+
 @app.route('/search', methods=['GET'])
+@auth.login_required
 def search():
     """
     Endpoint for searching a Wikipedia definition.
@@ -63,7 +91,9 @@ def search():
 
     return jsonify({'title': title, 'content': page_content})
 
+
 @app.route('/related', methods=['GET'])
+@auth.login_required
 def related():
     """
     Endpoint for fetching related links from a Wikipedia page.
@@ -85,12 +115,14 @@ def related():
 
     # Extract links from the response
     pages = page_data.get('query', {}).get('pages', {})
-    links = [link['title'] for page in pages.values() for link in page.get('links', [])]
-
+    links = [link['title'] for page in pages.values()
+            for link in page.get('links', [])]
 
     return jsonify({'title': term, 'links': links})
 
+
 @app.route('/random', methods=['GET'])
+@auth.login_required
 def random_content():
     """
     Endpoint for fetching a random Wikipedia page.
@@ -103,11 +135,12 @@ def random_content():
         'action': 'query',
         'list': 'random',
         'rnlimit': 1,
-        'rnnamespace': 0  # Limit to main article namespace
+        'rnnamespace': 0
     }, lang)
 
     # Extract the title of the random page
-    random_title = random_data.get('query', {}).get('random', [{}])[0].get('title', '')
+    random_title = random_data.get('query', {}).get(
+        'random', [{}])[0].get('title', '')
 
     if not random_title:
         return jsonify({'error': 'Failed to retrieve a random Wikipedia page.'}), 500
@@ -125,6 +158,12 @@ def random_content():
     page_content = next(iter(pages.values()), {}).get('extract', '')
 
     return jsonify({'title': random_title, 'content': page_content})
+
+
+# AWS Lambda handler
+def lambda_handler(event, context):
+    return awsgi.response(app, event, context)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

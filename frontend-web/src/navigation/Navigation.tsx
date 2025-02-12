@@ -7,6 +7,7 @@ import { fetchDataForD2D } from '../api/dataFetcherD2D.ts';
 import Header from './Header.tsx';
 import Footer from '../components/Footer.tsx';
 import DefToDef from '../pages/game-modes/DefToDef.tsx';
+import PrivacyPolicy from '../pages/PrivacyPolicy.tsx';
 
 
 
@@ -56,6 +57,7 @@ const Navigation = () => {
                             />
                         }
                     />
+                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="*" element={<HomePage />} /> 
                 </Routes>
             </div>

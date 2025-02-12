@@ -55,7 +55,7 @@ const TextBox: React.FC<TextBoxProps> = ({ title, content, relatedTerms, onHighl
     const defaultContent = "No content available.";
 
     return (
-        <div className="w-3/4 bg-white text-black mx-8">
+        <div className="w-3/4 bg-white text-black mx-8 py-6">
             {title && (
                 <div className="text-2xl font-bold text-center font-robotoMono">
                     {title}

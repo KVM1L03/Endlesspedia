@@ -4,14 +4,17 @@ import Button from '../components/game/Button.tsx';
 import { FaTiktok } from 'react-icons/fa';
 
 function HomePage() {
+    
     return (
         <div className='bg-[#ffedd9] flex flex-col mx-8 my-4 rounded-xl'>
             <section className='flex flex-row items-center justify-between w-full'>
                 <div className='flex flex-col'>
                     <h1 className="text-4xl font-bold font-robotoMono m-6">Dive into a world of knowledge & fun!</h1>
                     <p className="text-xl font-robotoMono m-8">Start your adventure today !</p>
-                    <p className="text-md text-wrap max-w-2xl font-robotoMono m-8">Endlesspedia is your gateway to endless learning and entertainment. Explore a variety of topics, challenge yourself with exciting game modes, and expand your knowledge in a fun and engaging way!
-                    <Button color='#ff8f12' text='Follow us on TikTok!' textColor='black' className='self-start my-8 flex items-center' icon={<FaTiktok />}/></p>
+                    <p className="text-md text-wrap max-w-2xl font-robotoMono m-8">
+                        Endlesspedia is your gateway to endless learning and entertainment. Explore a variety of topics, challenge yourself with exciting game modes, and expand your knowledge in a fun and engaging way!
+                    </p>
+                    <Button color='#ff8f12' text='Follow us on TikTok!' textColor='black' className='self-start my-8 flex items-center' icon={<FaTiktok />} href='https://www.tiktok.com/@endlesspedia' />
                 </div>
                 <div className='flex'>
                     <img src="https://i.ibb.co/bjMKV8nv/illustration.png" alt='Superhero' className='max-w-full h-auto'/>
@@ -23,6 +26,14 @@ function HomePage() {
                 <Link to="/choose-game">
                     <Button color='#ff8f12' text='Choose Game' textColor='black' className='m-4'/>
                 </Link>
+            </section>
+            <section className='flex flex-col items-center justify-center w-full mt-8'>
+                <ins className="adsbygoogle"
+                    style={{ display: 'block' }}
+                    data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                    data-ad-slot="XXXXXXXXXX"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
             </section>
         </div>
     );

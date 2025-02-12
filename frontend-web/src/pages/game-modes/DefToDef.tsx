@@ -135,7 +135,7 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
                 <div className="fixed top-16 right-0 p-4 flex justify-end space-x-12">
                     <GameInfo time={formatTime(time)} steps={stepCount} />
                 </div>
-                <div className="flex-1 my-24 overflow-auto">
+                <div className="flex-1 overflow-auto">
                     <Suspense fallback={<SkeletonLoader />}>
                         {loading ? (
                             <SkeletonLoader />

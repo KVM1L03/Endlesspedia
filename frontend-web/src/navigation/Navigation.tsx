@@ -34,7 +34,7 @@ const Navigation = () => {
     const defaultDefToDefData = {
         title: 'DefToDef Mode',
         content: 'Choose path from one to another term or choose from most popular.',
-        relatedTerms: ['default1', 'default2', 'default3'],
+        relatedTerms: ['path'],
     };
 
     return (
@@ -63,8 +63,6 @@ const Navigation = () => {
                             />
                         }
                     />
-                    <Route path="/blitz" element={<div>Definition to Definition Blitz</div>} />
-                    <Route path="/settings" element={<div>Settings Page</div>} />
                     <Route path="*" element={<HomePage />} /> 
                 </Routes>
             </div>

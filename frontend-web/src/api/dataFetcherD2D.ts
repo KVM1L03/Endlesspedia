@@ -5,7 +5,6 @@ export const fetchDataForD2D = async ({ term }) => {
         const definition = await getDefinition(term);
         const relatedTermsResponse = await getRelatedTerms(definition.title);
         const relatedTerms = relatedTermsResponse.links || []; 
-        console.log('Related Terms:', relatedTerms);
         return {
             title: definition.title,
             content: definition.content,

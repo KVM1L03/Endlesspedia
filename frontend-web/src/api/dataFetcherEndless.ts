@@ -5,7 +5,6 @@ export const fetchDataForEndless = async () => {
         const randomDefinition = await getRandomDefinition();
         const relatedTermsResponse = await getRelatedTerms(randomDefinition.title);
         const relatedTerms = relatedTermsResponse.links || []; 
-        console.log('Related Terms:', relatedTerms);
         return {
             title: randomDefinition.title,
             content: randomDefinition.content,

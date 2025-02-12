@@ -10,16 +10,17 @@ const PopularListD2D: React.FC<PopularListD2DProps> = ({ popularLinks, onLinkCli
     const medals = ['🥇', '🥈', '🥉'];
 
     return (
-        <div className="bg-white rounded-lg shadow-lg p-4 font-robotoMono">
-            <h2 className="text-xl text-center font-bold mb-4">Most popular paths</h2>
-            <ul className="list-disc pl-5 my-4">
+        <div className="bg-white rounded-lg shadow-lg p-2 md:p-4 font-robotoMono">
+            <h2 className="text-xs md:text-lg text-center font-bold mb-2 md:mb-4">Most popular paths</h2>
+            <ul className="list-disc pl-4 md:pl-5 my-1 md:my-4">
                 {popularLinks.slice(0, 5).map((link, index) => (
-                    <div className='my-4'>
+                    <div key={index} className='my-1 md:my-4'>
                         <Button
                             text={`${index < 3 ? medals[index] + ' ' : ''}${link.from} → ${link.to}`}
                             color="#ffedd9"
                             textColor="blue-500"
                             onClick={() => onLinkClick(link.from, link.to)}
+                            className="w-full text-center text-xs md:text-sm"
                         />
                     </div>
                 ))}

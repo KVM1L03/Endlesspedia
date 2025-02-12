@@ -10,14 +10,14 @@ interface ButtonProps {
 }
 
 interface SideBarProps {
-    title: string;
-    buttons: ButtonProps[];
+    title?: string;
+    buttons?: ButtonProps[];
     children?: React.ReactNode;
 }
 
-const SideBar: React.FC<SideBarProps> = ({ title, buttons, children }) => {
+const SideBar: React.FC<SideBarProps> = ({ title, buttons = [], children }) => {
     return (
-        <div className="w-1/4 p-4 flex flex-col space-y-4">
+        <div className="w-full md:w-1/4 p-4 flex flex-col space-y-4">
             <div className="bg-white rounded-xl shadow-lg p-4 py-12">
                 <h2 className="text-xl font-robotoMono font-bold mb-4">{title}</h2>
                 {buttons.map((buttonProps, index) => (

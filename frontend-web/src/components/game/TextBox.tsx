@@ -4,11 +4,10 @@ interface TextBoxProps {
     title: string;
     content: string;
     relatedTerms: string[];
-    onHighlightClick: (word: string) => void;
     handleClick: (word: string) => Promise<void>;
 }
 
-const TextBox: React.FC<TextBoxProps> = ({ title, content, relatedTerms, onHighlightClick, handleClick }) => {
+const TextBox: React.FC<TextBoxProps> = ({ title, content, relatedTerms, handleClick }) => {
     const getHighlightedText = (text: string, highlight: string[] = []) => {
         const regex = new RegExp(`\\b(${highlight.map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`, 'gi');
         const parts = text.split(regex);
@@ -55,9 +54,9 @@ const TextBox: React.FC<TextBoxProps> = ({ title, content, relatedTerms, onHighl
     const defaultContent = "No content available.";
 
     return (
-        <div className="w-3/4 bg-white text-black mx-8 py-6">
+        <div className="w-full md:w-3/4 lg:w-2/3 bg-white text-black mx-4 md:mx-8 p-4 relative mt-16 md:mt-0">
             {title && (
-                <div className="text-2xl font-bold text-center font-robotoMono">
+                <div className="text-xl md:text-2xl font-bold text-center font-robotoMono mb-4">
                     {title}
                 </div>
             )}

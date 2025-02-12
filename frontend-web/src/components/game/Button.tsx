@@ -22,12 +22,12 @@ const Button: React.FC<ButtonProps> = ({ text, color, textColor, onClick, disabl
 
     return (
         <button
-            style={{ backgroundColor: color, color: textColor }}
+            style={{ backgroundColor: color || '#ff8f12', color: textColor || 'black' }}
             className={`font-bold font-robotoMono py-2 px-4 rounded-full shadow-md shadow-black transition duration-300 ease-in-out transform hover:scale-105 ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} ${className}`}
             onClick={handleClick}
             disabled={disabled}
         >
-            <span className="flex items-center">
+            <span className="flex justify-center items-center w-full">
                 {text}
                 {icon && <span className="ml-2">{icon}</span>}
             </span>

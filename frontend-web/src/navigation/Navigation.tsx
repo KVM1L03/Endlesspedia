@@ -8,9 +8,7 @@ import Header from './Header.tsx';
 import Footer from '../components/Footer.tsx';
 import DefToDef from '../pages/game-modes/DefToDef.tsx';
 
-const handleHighlightClick = (word: string) => {
-    console.log(`Clicked on: ${word}`);
-};
+
 
 const Navigation = () => {
     const [defToDefData, setDefToDefData] = useState<{ title: string; content: string; relatedTerms: string[] } | null>(null);
@@ -22,9 +20,7 @@ const Navigation = () => {
             try {
                 const d2dData = await fetchDataForD2D({ term: initialTerm });
                 setDefToDefData(d2dData);
-                console.log('Fetched DefToDef Data:', d2dData);
             } catch (error) {
-                console.error('Error fetching data:', error);
             }
         };
 
@@ -47,9 +43,7 @@ const Navigation = () => {
                     <Route
                         path="/endless"
                         element={
-                            <Endless
-                                onHighlightClick={handleHighlightClick}
-                            />
+                            <Endless />
                         }
                     />
                     <Route
@@ -59,7 +53,6 @@ const Navigation = () => {
                                 title={defToDefData?.title || defaultDefToDefData.title}
                                 content={defToDefData?.content || defaultDefToDefData.content}
                                 relatedTerms={defToDefData?.relatedTerms || defaultDefToDefData.relatedTerms}
-                                onHighlightClick={handleHighlightClick}
                             />
                         }
                     />

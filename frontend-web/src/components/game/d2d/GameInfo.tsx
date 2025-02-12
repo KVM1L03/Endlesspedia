@@ -9,7 +9,7 @@ interface GameInfoProps {
 
 const GameInfo: React.FC<GameInfoProps> = ({ time, steps }) => {
     return (
-        <div>
+        <div className="flex flex-row space-x-2 md:space-x-4">
             <StepsCounter steps={steps} />
             <Timer time={time} />
         </div>

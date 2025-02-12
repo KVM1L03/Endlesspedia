@@ -12,10 +12,10 @@ interface DefToDefProps {
     title: string;
     content: string;
     relatedTerms: string[];
-    onHighlightClick: (word: string) => void;
+    onHighlightClick?: (word: string) => void;
 }
 
-const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHighlightClick }) => {
+const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms }) => {
     const [currentTitle, setCurrentTitle] = useState<string>(title);
     const [currentContent, setCurrentContent] = useState<string>(content);
     const [currentRelatedTerms, setCurrentRelatedTerms] = useState<string[]>(relatedTerms);
@@ -25,10 +25,11 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
     const [stepCount, setStepCount] = useState<number>(0);
     const [showAnimation, setShowAnimation] = useState<boolean>(false);
     const [time, setTime] = useState<number>(0);
+    const [timerRunning, setTimerRunning] = useState<boolean>(false);
 
     useEffect(() => {
         let timer: NodeJS.Timeout | undefined;
-        if (!showAnimation) {
+        if (timerRunning) {
             timer = setInterval(() => {
                 setTime(prevTime => prevTime + 1);
             }, 1000);
@@ -36,7 +37,7 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
             clearInterval(timer);
         }
         return () => clearInterval(timer);
-    }, [showAnimation]);
+    }, [timerRunning]);
 
     const formatTime = (time: number) => {
         const minutes = Math.floor(time / 60);
@@ -45,26 +46,24 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
     };
 
     const handleClick = async (word: string) => {
-        console.log(`Clicked on word: ${word}`);
         const normalizedWord = word.trim().toLowerCase();
         const normalizedRelatedTerms = currentRelatedTerms.map(term => term.trim().toLowerCase());
 
         if (normalizedRelatedTerms.includes(normalizedWord)) {
-            console.log(`Fetching data for word: ${word}`);
-            onHighlightClick(word);
+
             setLoading(true);
             setStepCount(stepCount + 1);
 
             try {
                 const newContent = await getDefinition(word);
                 const newRelatedTerms = await getRelatedTerms(word);
-                console.log('New data fetched:', { newContent, newRelatedTerms });
                 setCurrentTitle(word);
                 setCurrentContent(newContent.content || '');
                 setCurrentRelatedTerms(newRelatedTerms.links || []);
                 window.scrollTo(0, 0); 
                 if (word === toTerm) {
                     setShowAnimation(true);
+                    setTimerRunning(false);
                 }
             } catch (error) {
                 console.error('Error fetching new definition:', error);
@@ -80,6 +79,7 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
         setLoading(true);
         setTime(0);
         setStepCount(0);
+        setTimerRunning(true);
         try {
             const newContent = await getDefinition(fromTerm);
             const newRelatedTerms = await getRelatedTerms(fromTerm);
@@ -89,6 +89,7 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
             window.scrollTo(0, 0);
             if (fromTerm === toTerm) {
                 setShowAnimation(true);
+                setTimerRunning(false);
             }
         } catch (error) {
             console.error('Error fetching new definition:', error);
@@ -97,15 +98,9 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
         }
     };
 
-    const popularPaths = [
-        { text: '🥇 England -> France', onClick: () => handleClick('Top Definition 1'), color: '#ffedd9', textColor: 'black' },
-        { text: '🥈 Poland -> Germany', onClick: () => handleClick('Top Definition 2'), color: '#ffedd9', textColor: 'black' },
-        { text: '🥉 Coca cola -> Pepsi', onClick: () => handleClick('Top Definition 3'), color: '#ffedd9', textColor: 'black' },
-    ];
-
     return (
-        <div className="bg-white text-black min-h-screen flex">
-            <SideBar title="Popular Paths" buttons={popularPaths} >
+        <div className="bg-white text-black min-h-screen flex flex-col md:flex-row">
+            <SideBar title='Choose Path'>
                 <div className="p-4 bg-gray-100 rounded-lg shadow-md font-robotoMono">
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700">From:</label>
@@ -131,11 +126,11 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
                     <Button color='#ff8f12' text='Submit' onClick={handleSubmit} textColor='black' />
                 </div>
             </SideBar>
-            <div className="w-3/4 flex flex-col relative">
-                <div className="fixed top-16 right-0 p-4 flex justify-end space-x-12">
+            <div className="w-full md:w-3/4 flex flex-col relative mt-4 md:mt-0">
+                <div className="fixed top-16 right-0 p-4 flex justify-end space-x-4">
                     <GameInfo time={formatTime(time)} steps={stepCount} />
                 </div>
-                <div className="flex-1 overflow-auto">
+                <div className="flex-1 overflow-auto mt-16 md:mt-0">
                     <Suspense fallback={<SkeletonLoader />}>
                         {loading ? (
                             <SkeletonLoader />
@@ -146,7 +141,6 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms, onHig
                                     content={currentContent}
                                     relatedTerms={currentRelatedTerms}
                                     handleClick={handleClick}
-                                    onHighlightClick={onHighlightClick}
                                 />
                             </div>
                         )}

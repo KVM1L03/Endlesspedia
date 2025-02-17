@@ -27,6 +27,8 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms }) => 
     const [showAnimation, setShowAnimation] = useState<boolean>(false);
     const [time, setTime] = useState<number>(0);
     const [timerRunning, setTimerRunning] = useState<boolean>(false);
+    const [fromError, setFromError] = useState<string>('');
+    const [toError, setToError] = useState<string>('');
 
     // Timer Management
     useEffect(() => {
@@ -47,8 +49,14 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms }) => 
 
     // Handle Word Selection
     const handleClick = async (word: string) => {
+        console.log(`Clicked on word: ${word}`);
         const normalizedWord = word.trim().toLowerCase();
-        if (!currentRelatedTerms.includes(normalizedWord)) return;
+        const normalizedRelatedTerms = currentRelatedTerms.map(term => term.trim().toLowerCase());
+
+        if (!normalizedRelatedTerms.includes(normalizedWord)) {
+            console.log(`Word not found in currentRelatedTerms: ${currentRelatedTerms}`);
+            return;
+        }
 
         setLoading(true);
         setStepCount(prev => prev + 1);
@@ -56,6 +64,7 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms }) => 
         try {
             const newContent = await getDefinition(word);
             const newRelatedTerms = await getRelatedTerms(word);
+            console.log('New data fetched:', { newContent, newRelatedTerms });
             setCurrentTitle(word);
             setCurrentContent(newContent.content || '');
             setCurrentRelatedTerms(newRelatedTerms.links || []);
@@ -74,7 +83,8 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms }) => 
     // Handle Submit
     const handleSubmit = async () => {
         if (!fromTerm || !toTerm) {
-            console.error('Both "From" and "To" terms must be set.');
+            if (!fromTerm) setFromError('Text field cannot be empty, pick definition from list');
+            if (!toTerm) setToError('Text field cannot be empty, pick definition from list');
             return;
         }
 
@@ -82,6 +92,8 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms }) => 
         setTime(0);
         setStepCount(0);
         setTimerRunning(true);
+        setFromError('');
+        setToError('');
 
         try {
             const newContent = await getDefinition(fromTerm);
@@ -112,8 +124,16 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms }) => 
                             inputClassName="bg-gray-100"
                             resultClassName="bg-white"
                             resultItemClassName="text-blue-500"
-                            onResultClick={setFromTerm}
+                            onResultClick={(term) => {
+                                setFromTerm(term);
+                                setFromError('');
+                            }}
                         />
+                        {fromError && (
+                            <div className="text-red-500 mt-2">
+                                {fromError}
+                            </div>
+                        )}
                     </div>
 
                     <div className="flex justify-center mb-4 text-xl">↓</div>
@@ -125,11 +145,24 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms }) => 
                             inputClassName="bg-gray-100"
                             resultClassName="bg-white"
                             resultItemClassName="text-blue-500"
-                            onResultClick={setToTerm}
+                            onResultClick={(term) => {
+                                setToTerm(term);
+                                setToError('');
+                            }}
                         />
+                        {toError && (
+                            <div className="text-red-500 mt-2">
+                                {toError}
+                            </div>
+                        )}
                     </div>
-                        <Button color="#ff8f12" text="Submit" onClick={handleSubmit} textColor="black" />
-                    
+                    <Button
+                        color="#ff8f12"
+                        text="Submit"
+                        onClick={handleSubmit}
+                        textColor="black"
+                        disabled={loading || !fromTerm || !toTerm}
+                    />
                 </div>
             </SideBar>
 

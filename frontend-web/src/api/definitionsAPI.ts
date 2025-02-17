@@ -3,8 +3,7 @@ import axios from 'axios';
 const apiKey = process.env.REACT_APP_API_KEY;
 
 const axiosInstance = axios.create({
-    // baseURL: 'https://o55yp7ezeg.execute-api.eu-central-1.amazonaws.com/dev',
-    baseURL: 'http://127.0.0.1:5000',
+    baseURL: 'https://o55yp7ezeg.execute-api.eu-central-1.amazonaws.com/dev',
     headers: {
         'Authorization': `Bearer ${apiKey}`
     }

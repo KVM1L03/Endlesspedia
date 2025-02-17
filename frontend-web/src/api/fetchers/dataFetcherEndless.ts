@@ -1,4 +1,4 @@
-import { getRandomDefinition, getRelatedTerms } from './definitionsAPI.ts';
+import { getRandomDefinition, getRelatedTerms } from '../definitionsAPI.ts';
 
 export const fetchDataForEndless = async () => {
     try {

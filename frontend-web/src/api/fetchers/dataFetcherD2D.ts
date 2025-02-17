@@ -1,4 +1,4 @@
-import { getDefinition, getRelatedTerms } from './definitionsAPI.ts';
+import { getDefinition, getRelatedTerms } from '../definitionsAPI.ts';
 
 export const fetchDataForD2D = async ({ term }) => {
     try {

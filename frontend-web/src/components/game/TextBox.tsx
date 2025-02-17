@@ -54,14 +54,14 @@ const TextBox: React.FC<TextBoxProps> = ({ title, content, relatedTerms, handleC
     const defaultContent = "No content available.";
 
     return (
-        <div className="w-full md:w-3/4 lg:w-2/3 bg-white text-black mx-4 md:mx-8 p-4 relative mt-16 md:mt-0">
+        <div className="w-full md:w-5/6 lg:w-4/5 xl:w-3/4 bg-white text-black mx-auto p-6 md:p-8 lg:p-4 overflow-hidden lg:mx-2">
             {title && (
                 <div className="text-xl md:text-2xl font-bold text-center font-robotoMono mb-4">
                     {title}
                 </div>
             )}
             {content ? (
-                <div className="text-sm font-robotoMono">
+                <div className="text-sm font-robotoMono text-justify leading-relaxed break-words overflow-x-hidden">
                     {renderSections(content)}
                 </div>
             ) : (

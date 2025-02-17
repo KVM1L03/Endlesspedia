@@ -1,6 +1,6 @@
 import React from 'react';
-import Timer from '../../game/Timer.tsx';
-import StepsCounter from '../../game/StepsCounter.tsx';
+import Timer from './Timer.tsx';
+import StepsCounter from './StepsCounter.tsx';
 
 interface GameInfoProps {
     time: string;
@@ -9,7 +9,7 @@ interface GameInfoProps {
 
 const GameInfo: React.FC<GameInfoProps> = ({ time, steps }) => {
     return (
-        <div className="flex flex-row space-x-2 md:space-x-4">
+        <div className="fixed top-20 right-4 p-4 flex justify-end space-x-4">
             <StepsCounter steps={steps} />
             <Timer time={time} />
         </div>

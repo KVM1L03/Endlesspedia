@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { getDefinition, getRelatedTerms } from '../../api/definitionsAPI.ts';
-import { fetchDataForEndless } from '../../api/dataFetcherEndless.ts';
+import { fetchDataForEndless } from '../../api/fetchers/dataFetcherEndless.ts';
 import Timer from '../../components/game/Timer.tsx';
 import SideBar from '../../components/game/SideBar.tsx';
 import SkeletonLoader from '../../components/animation/SkeletonLoader.tsx';

@@ -124,7 +124,8 @@ zip -r deployment.zip .
 - Python
 
 ## 📌 Future Improvements
-- 🌟 Leaderboard to track best times
+- 💵 Connection with Google AdSense
+- 🌟 User sessions and Leaderboard to track best times
 - 🎨 UI enhancements and animations
 - 📖 More data sources for definitions
 - 📱 Mobile App

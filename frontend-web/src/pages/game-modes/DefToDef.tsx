@@ -4,8 +4,7 @@ import SideBar from '../../components/game/SideBar.tsx';
 import SkeletonLoader from '../../components/animation/SkeletonLoader.tsx';
 import WinPopout from '../../components/game/WinPopout.tsx';
 import GameInfo from '../../components/game/GameInfo.tsx';
-import SearchBar from '../../components/SearchBar.tsx';
-import Button from '../../components/game/Button.tsx';
+import DefToDefForm from '../../components/game/DefToDefForm.tsx';
 
 const TextBox = React.lazy(() => import('../../components/game/TextBox.tsx'));
 
@@ -16,21 +15,16 @@ interface DefToDefProps {
 }
 
 const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms }) => {
-    // State Management
     const [currentTitle, setCurrentTitle] = useState<string>(title);
     const [currentContent, setCurrentContent] = useState<string>(content);
     const [currentRelatedTerms, setCurrentRelatedTerms] = useState<string[]>(relatedTerms);
     const [loading, setLoading] = useState<boolean>(false);
-    const [fromTerm, setFromTerm] = useState<string>('');
-    const [toTerm, setToTerm] = useState<string>('');
     const [stepCount, setStepCount] = useState<number>(0);
     const [showAnimation, setShowAnimation] = useState<boolean>(false);
     const [time, setTime] = useState<number>(0);
     const [timerRunning, setTimerRunning] = useState<boolean>(false);
-    const [fromError, setFromError] = useState<string>('');
-    const [toError, setToError] = useState<string>('');
+    const [toTerm, setToTerm] = useState<string>('');
 
-    // Timer Management
     useEffect(() => {
         let timer: NodeJS.Timeout | undefined;
         if (timerRunning) {
@@ -47,14 +41,11 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms }) => 
         return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
 
-    // Handle Word Selection
     const handleClick = async (word: string) => {
-        console.log(`Clicked on word: ${word}`);
         const normalizedWord = word.trim().toLowerCase();
         const normalizedRelatedTerms = currentRelatedTerms.map(term => term.trim().toLowerCase());
 
         if (!normalizedRelatedTerms.includes(normalizedWord)) {
-            console.log(`Word not found in currentRelatedTerms: ${currentRelatedTerms}`);
             return;
         }
 
@@ -64,7 +55,6 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms }) => 
         try {
             const newContent = await getDefinition(word);
             const newRelatedTerms = await getRelatedTerms(word);
-            console.log('New data fetched:', { newContent, newRelatedTerms });
             setCurrentTitle(word);
             setCurrentContent(newContent.content || '');
             setCurrentRelatedTerms(newRelatedTerms.links || []);
@@ -80,20 +70,12 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms }) => 
         }
     };
 
-    // Handle Submit
-    const handleSubmit = async () => {
-        if (!fromTerm || !toTerm) {
-            if (!fromTerm) setFromError('Text field cannot be empty, pick definition from list');
-            if (!toTerm) setToError('Text field cannot be empty, pick definition from list');
-            return;
-        }
-
+    const handleSubmit = async (fromTerm: string, toTerm: string) => {
         setLoading(true);
         setTime(0);
         setStepCount(0);
         setTimerRunning(true);
-        setFromError('');
-        setToError('');
+        setToTerm(toTerm);
 
         try {
             const newContent = await getDefinition(fromTerm);
@@ -116,54 +98,7 @@ const DefToDef: React.FC<DefToDefProps> = ({ title, content, relatedTerms }) => 
     return (
         <div className="bg-white text-black min-h-screen flex flex-col md:flex-row">
             <SideBar title="Choose Path">
-                <div className="p-4 bg-gray-100 rounded-lg shadow-md">
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">From:</label>
-                        <SearchBar
-                            placeholder="Search for terms..."
-                            inputClassName="bg-gray-100"
-                            resultClassName="bg-white"
-                            resultItemClassName="text-blue-500"
-                            onResultClick={(term) => {
-                                setFromTerm(term);
-                                setFromError('');
-                            }}
-                        />
-                        {fromError && (
-                            <div className="text-red-500 mt-2">
-                                {fromError}
-                            </div>
-                        )}
-                    </div>
-
-                    <div className="flex justify-center mb-4 text-xl">↓</div>
-
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">To:</label>
-                        <SearchBar
-                            placeholder="Search for terms..."
-                            inputClassName="bg-gray-100"
-                            resultClassName="bg-white"
-                            resultItemClassName="text-blue-500"
-                            onResultClick={(term) => {
-                                setToTerm(term);
-                                setToError('');
-                            }}
-                        />
-                        {toError && (
-                            <div className="text-red-500 mt-2">
-                                {toError}
-                            </div>
-                        )}
-                    </div>
-                    <Button
-                        color="#ff8f12"
-                        text="Submit"
-                        onClick={handleSubmit}
-                        textColor="black"
-                        disabled={loading || !fromTerm || !toTerm}
-                    />
-                </div>
+                <DefToDefForm onSubmit={handleSubmit} loading={loading} />
             </SideBar>
 
             <div className="flex-1 flex flex-col px-4 md:px-8 lg:px-12 pt-20">

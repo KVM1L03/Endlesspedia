@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { searchDefinitions } from '../api/definitionsAPI.ts';
-import { FaSearch } from 'react-icons/fa';
 
 interface SearchBarProps {
     placeholder?: string;
@@ -22,7 +21,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     const [showResults, setShowResults] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
-    const fetchResults = async () => {
+    const fetchResults = useCallback(async () => {
         if (!query.trim()) {
             setError("It can't be empty!");
             setResults([]);
@@ -31,7 +30,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         }
         try {
             const searchResults = await searchDefinitions(query);
-            setResults(searchResults);
+            setResults(searchResults.slice(0, 5)); // Limit to 5 results
             setShowResults(true);
             setError(null);
         } catch (error) {
@@ -40,7 +39,19 @@ const SearchBar: React.FC<SearchBarProps> = ({
             setShowResults(false);
             setError('Error fetching search results');
         }
-    };
+    }, [query]);
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            if (query) {
+                fetchResults();
+            }
+        }, 1000); // 1 second debounce
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [query, fetchResults]);
 
     const handleResultClick = (result: string) => {
         setQuery(result);
@@ -51,14 +62,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
         }
     };
 
-    const handleSearchClick = () => {
-        fetchResults();
-    };
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            fetchResults();
-        }
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setQuery(e.target.value);
+        setError(null);
     };
 
     return (
@@ -67,20 +73,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 <input
                     type="text"
                     value={query}
-                    onChange={(e) => {
-                        setQuery(e.target.value);
-                        setError(null);
-                    }}
-                    onKeyDown={handleKeyDown}
+                    onChange={handleInputChange}
                     className={`w-full p-2 focus:outline-none focus:ring-black focus:border-black ${inputClassName}`}
                     placeholder={placeholder}
                 />
-                <button
-                    onClick={handleSearchClick}
-                    className="p-2 bg-gray-200 hover:bg-gray-300 rounded-md mx-1 focus:outline-none"
-                >
-                    <FaSearch />
-                </button>
             </div>
             {error && <div className="text-red-500 mt-2">{error}</div>}
             {showResults && results.length > 0 && (

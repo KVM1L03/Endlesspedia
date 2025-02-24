@@ -26,14 +26,7 @@ function HomePage() {
                     <Button color='#ff8f12' text='Choose Game' textColor='black' className='m-4'/>
                 </Link>
             </section>
-            <section className='flex flex-col items-center justify-center w-full mt-8'>
-                <ins className="adsbygoogle"
-                    style={{ display: 'block' }}
-                    data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-                    data-ad-slot="XXXXXXXXXX"
-                    data-ad-format="auto"
-                    data-full-width-responsive="true"></ins>
-            </section>
+            
         </div>
     );
 }

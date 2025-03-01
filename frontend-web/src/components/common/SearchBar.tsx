@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { searchDefinitions } from '../api/definitionsAPI.ts';
+import { searchDefinitions } from '../../api/definitionsAPI.ts';
 
 interface SearchBarProps {
     placeholder?: string;

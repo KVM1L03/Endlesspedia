@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import SearchBar from '../SearchBar.tsx';
-import Button from './Button.tsx';
+import SearchBar from '../../common/SearchBar.tsx';
+import Button from '../../common/Button.tsx';
 
 interface DefToDefFormProps {
     onSubmit: (fromTerm: string, toTerm: string) => void;

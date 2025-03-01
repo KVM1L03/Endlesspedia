@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import HomePage from '../pages/HomePage.tsx';
-import ChoseGamePage from '../pages/ChoseGamePage.tsx';
-import Endless from '../pages/game-modes/Endless.tsx';
-import { fetchDataForD2D } from '../api/fetchers/dataFetcherD2D.ts';
+import HomePage from '../../pages/HomePage.tsx';
+import ChoseGamePage from '../../pages/ChoseGamePage.tsx';
+import Endless from '../../pages/game-modes/Endless.tsx';
+import { fetchDataForD2D } from '../../api/fetchers/dataFetcherD2D.ts';
 import Header from './Header.tsx';
 import Footer from '../components/Footer.tsx';
-import DefToDef from '../pages/game-modes/DefToDef.tsx';
-import PrivacyPolicy from '../pages/PrivacyPolicy.tsx';
+import DefToDef from '../../pages/game-modes/DefToDef.tsx';
+import PrivacyPolicy from '../../pages/PrivacyPolicy.tsx';
 
 
 

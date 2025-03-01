@@ -4,7 +4,7 @@
     import Timer from '../../components/game/Timer.tsx';
     import SideBar from '../../components/game/SideBar.tsx';
     import SkeletonLoader from '../../components/animation/SkeletonLoader.tsx';
-    import Button from '../../components/game/Button.tsx';
+    import Button from '../../components/common/Button.tsx';
     
     const TextBox = React.lazy(() => import('../../components/game/TextBox.tsx'));
     

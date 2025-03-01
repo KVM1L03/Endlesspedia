@@ -4,7 +4,7 @@ import SideBar from '../../components/game/SideBar.tsx';
 import SkeletonLoader from '../../components/animation/SkeletonLoader.tsx';
 import WinPopout from '../../components/game/WinPopout.tsx';
 import GameInfo from '../../components/game/GameInfo.tsx';
-import DefToDefForm from '../../components/game/DefToDefForm.tsx';
+import DefToDefForm from '../../components/game/d2d/DefToDefForm.tsx';
 
 const TextBox = React.lazy(() => import('../../components/game/TextBox.tsx'));
 

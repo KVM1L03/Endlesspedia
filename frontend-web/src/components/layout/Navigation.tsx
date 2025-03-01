@@ -5,7 +5,7 @@ import ChoseGamePage from '../../pages/ChoseGamePage.tsx';
 import Endless from '../../pages/game-modes/Endless.tsx';
 import { fetchDataForD2D } from '../../api/fetchers/dataFetcherD2D.ts';
 import Header from './Header.tsx';
-import Footer from '../components/Footer.tsx';
+import Footer from '../layout/Footer.tsx';
 import DefToDef from '../../pages/game-modes/DefToDef.tsx';
 import PrivacyPolicy from '../../pages/PrivacyPolicy.tsx';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Button from '../components/game/Button.tsx';
+import Button from '../common/Button.tsx';
 
 const Header: React.FC = () => {
     return (

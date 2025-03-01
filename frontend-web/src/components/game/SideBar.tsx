@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from './Button.tsx';
+import Button from '../common/Button.tsx';
 
 interface ButtonProps {
     text: string;

@@ -8,8 +8,7 @@ import Header from './Header.tsx';
 import Footer from '../layout/Footer.tsx';
 import DefToDef from '../../pages/game-modes/DefToDef.tsx';
 import PrivacyPolicy from '../../pages/PrivacyPolicy.tsx';
-
-
+import Tournament from '../../pages/game-modes/Tournament.tsx';
 
 const Navigation = () => {
     const [defToDefData, setDefToDefData] = useState<{ title: string; content: string; relatedTerms: string[] } | null>(null);
@@ -22,6 +21,7 @@ const Navigation = () => {
                 const d2dData = await fetchDataForD2D({ term: initialTerm });
                 setDefToDefData(d2dData);
             } catch (error) {
+                console.error('Error fetching data for DefToDef:', error);
             }
         };
 
@@ -41,12 +41,7 @@ const Navigation = () => {
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/choose-game" element={<ChoseGamePage />} />
-                    <Route
-                        path="/endless"
-                        element={
-                            <Endless />
-                        }
-                    />
+                    <Route path="/endless" element={<Endless />} />
                     <Route
                         path="/def2def"
                         element={
@@ -58,7 +53,8 @@ const Navigation = () => {
                         }
                     />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                    <Route path="*" element={<HomePage />} /> 
+                    <Route path="/tournament" element={<Tournament />} />
+                    <Route path="*" element={<HomePage />} />
                 </Routes>
             </div>
             <Footer />

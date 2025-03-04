@@ -20,6 +20,9 @@ function ChoseGamePage() {
                         <Link to="/def2def" className="w-full md:w-auto flex justify-center">
                             <Button color="#ff8f12" text="Def2Def" textColor="black" className="w-full md:w-auto text-center" />
                         </Link>
+                        <Link to="/tournament" className="w-full md:w-auto flex justify-center">
+                            <Button color="#ff8f12" text="Tournament" textColor="black" className="w-full md:w-auto text-center" />
+                        </Link>
                     </div>
                 </div>
                 <div className="flex justify-center md:justify-end w-full md:w-1/2">
